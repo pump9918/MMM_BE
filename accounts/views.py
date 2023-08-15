@@ -35,12 +35,14 @@ from .serializers import RegisterSerializer, LoginSerializer
 from user.models import User 
 from rest_framework.permissions import AllowAny
 
+
 class RegisterView(CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
     
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
+    permission_classes = [AllowAny]
     
     def post(self, request):
         serializer = self.get_serializer(data=request.data)

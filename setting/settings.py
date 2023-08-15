@@ -224,5 +224,5 @@ CORS_ALLOW_CREDENTIALS = True
 
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.ModelBackend', #accounts 로그인 문제
 ]
