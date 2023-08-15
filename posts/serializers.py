@@ -3,7 +3,7 @@ from gtts import gTTS
 from django.conf import settings
 from rest_framework import serializers
 
-from user.serializers import UserSerializer
+from user.serializers import ProfileSerializer
 from .models import Post, TTSAudio, TTSAudioTitle
 
 
@@ -19,7 +19,7 @@ class TTSAudioSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    nickname = UserSerializer(read_only=True)
+    nickname = ProfileSerializer(read_only=True)
     tts_title_message = serializers.CharField(max_length=100, required=False)
     tts_message = serializers.CharField(max_length=1000, required=False)
     likes = serializers.SerializerMethodField()

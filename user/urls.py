@@ -1,11 +1,12 @@
 from django.urls import path
-from .views import UserListView, UserView, UserPostsListView, LikedPostsListView
+from .views import ProfileListView, ProfileView, EditorProfileView, UserPostsListView, LikedPostsListView
 
-app_name = 'user'
+app_name = 'users'
 
 urlpatterns = [
-    path('', UserListView.as_view()),
-    path('<int:pk>/', UserView.as_view()),
+    path('', ProfileListView.as_view()),
+    path('<int:pk>/', ProfileView.as_view()),
+    path('editorprofile/<int:pk>/', EditorProfileView.as_view()),
     path('current-user-posts/', UserPostsListView.as_view(), name='user-posts-list'),
     path('liked-posts/', LikedPostsListView.as_view(), name='liked-posts-list'),
 ]

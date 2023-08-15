@@ -42,6 +42,7 @@ urlpatterns = [
     path('user/profile/', include('user.urls')),
     path('user/', include('user.API.urls')),
     path('', include('posts.urls')),
+    path('accounts/', include('accounts.urls')),
     
     # swagger 관련
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
