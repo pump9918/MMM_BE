@@ -155,18 +155,18 @@ class EditorPostViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
-        # 사용자가 설정한 주소 정보
-        user_address = request.user.profile.address
-        user_province = user_address.province if user_address else None
-        user_city = user_address.city if user_address else None
+        if request.user.is_authenticated:
+            user_address = request.user.profile.address
+            user_province = user_address.province if user_address else None
+            user_city = user_address.city if user_address else None
 
-        # 작성자의 주소 정보
-        queryset = queryset.filter(
-            Q(author__profile__address__province=user_province) | Q(author__profile__address__city=user_city)
-        )
+            queryset = queryset.filter(
+                Q(author__profile__address__province=user_province) | Q(author__profile__address__city=user_city)
+            )
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
 
 
 
