@@ -19,6 +19,7 @@ class TTSAudioSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+    author_name = serializers.CharField(source='author.email', read_only=True)
     nickname = ProfileSerializer(read_only=True)
     tts_title_message = serializers.CharField(max_length=100, required=False)
     tts_message = serializers.CharField(max_length=1000, required=False)
@@ -28,7 +29,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('published_date', 'likes', 'author', 'title', 'content', 'nickname', 'tts_title_message', 'tts_message', 'tts_title_audio', 'tts_audio', 'tts_title_audio_message', 'tts_audio_message')
+        fields = ('published_date', 'likes', 'author_name', 'title', 'content', 'nickname', 'tts_title_message', 'tts_message', 'tts_title_audio', 'tts_audio', 'tts_title_audio_message', 'tts_audio_message')
         read_only_fields = ('id', 'published_date', 'likes', 'author', 'nickname')
     
     def create(self, validated_data):
