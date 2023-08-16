@@ -172,6 +172,8 @@ class EditorPostViewSet(viewsets.ModelViewSet):
 
  # 프론트 서버로 tts_title_mp3파일 전송하기 위한 APIView       
 class TTSAudioTitleAPIView(APIView):
+    permission_classes = []
+    
     def get(self, request, pk=None):
         post = Post.objects.get(pk=pk)
         if post.tts_title_audio:
@@ -184,6 +186,8 @@ class TTSAudioTitleAPIView(APIView):
         
  # 프론트 서버로 tts_mp3파일 전송하기 위한 APIView      
 class TTSAudioAPIView(APIView):
+    permission_classes = []
+    
     def get(self, request, pk=None):
         post = Post.objects.get(pk=pk)
         if post.tts_audio:
