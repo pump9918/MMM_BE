@@ -36,10 +36,20 @@ class PostViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         return self.create_post_with_audio(request, *args, **kwargs)
     
+    #@action(detail=False, methods=['post'])
+    #def create_post_with_audio(self, request):
+    #    print(request.user)
+    #    post_serializer = PostSerializer(data=request.data, context={'request': request})
     @action(detail=False, methods=['post'])
     def create_post_with_audio(self, request):
-        print(request.user)
-        post_serializer = PostSerializer(data=request.data, context={'request': request})
+        tts_title_message = request.data.get('tts_title_message')
+        tts_message = request.data.get('tts_message')
+
+        if not tts_title_message and not tts_message:
+            return Response({"error": "tts_title_message 또는 tts_message 중 하나는 필수입니다."}, status=status.HTTP_400_BAD_REQUEST)
+
+        post_serializer = PostSerializer(data=request.data, context={'request': request}) #d여기까지 추가코드
+        
         if post_serializer.is_valid():
             tts_title_message = request.data.get('tts_title_message')
             tts_message = request.data.get('tts_message')
@@ -172,6 +182,8 @@ class EditorPostViewSet(viewsets.ModelViewSet):
 
  # 프론트 서버로 tts_title_mp3파일 전송하기 위한 APIView       
 class TTSAudioTitleAPIView(APIView):
+    permission_classes = []
+    
     def get(self, request, pk=None):
         post = Post.objects.get(pk=pk)
         if post.tts_title_audio:
@@ -184,6 +196,8 @@ class TTSAudioTitleAPIView(APIView):
         
  # 프론트 서버로 tts_mp3파일 전송하기 위한 APIView      
 class TTSAudioAPIView(APIView):
+    permission_classes = []
+    
     def get(self, request, pk=None):
         post = Post.objects.get(pk=pk)
         if post.tts_audio:
