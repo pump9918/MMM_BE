@@ -32,7 +32,8 @@ for key, value in secrets.items():
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-89r0gm-d&=5t)55@5zo5=!gd-mca4$n+0jxi&tmwfy5zun3qig'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key')
+DJANGO_SECRET_KEY = 'django-insecure-89r0gm-d&=5t)55@5zo5=!gd-mca4$n+0jxi&tmwfy5zun3qig'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -153,12 +154,18 @@ USE_TZ = True
 
 
 
+
+
+
 SITE_ID = 1 #admin 출입 위해
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

@@ -33,6 +33,7 @@ class Post(models.Model):
     published_date = models.DateTimeField(default=timezone.now)
     tts_title_audio = models.ForeignKey(TTSAudioTitle, on_delete=models.SET_NULL, null=True, blank=True)
     tts_audio = models.ForeignKey(TTSAudio, on_delete=models.SET_NULL, null=True, blank=True)
+    image = models.ImageField(upload_to='post/', blank=True, null=True, default = '')
     
     def __str__(self):
         return self.title

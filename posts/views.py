@@ -6,7 +6,7 @@ from rest_framework import viewsets
 # from .permissions import CustomReadOnly
 from user.models import User
 from .models import Post, TTSAudioTitle, TTSAudio, Like
-from .serializers import PostSerializer
+from .serializers import PostSerializer, EditorPostSerializer
 from .paginations import PostPagination
 
 #tts 관련
@@ -97,9 +97,79 @@ class PostViewSet(viewsets.ModelViewSet):
         queryset = self.get_queryset().annotate(like_count=Count('likes')).order_by("-like_count")[:3]
         serializer = PostSerializer(queryset, many=True)
         return Response(serializer.data)
-    
 
-        
+
+class EditorPostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = EditorPostSerializer
+    permission_classes = []
+
+    @action(detail=False, methods=['post'])
+    def create_post(self, request):
+        serializer = EditorPostSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)  
+    
+    @action(detail=True, methods=['POST'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+
+        try:
+            like = Like.objects.get(user=user, post=post)
+            like.delete()
+            return Response({'message': '좋아요 취소됨'})
+        except Like.DoesNotExist:
+            Like.objects.create(user=user, post=post)
+            return Response({'message': '좋아요 추가됨'})
+    
+    @action(detail=False, methods=['GET'])
+    def top3(self, request):
+        queryset = self.get_queryset().annotate(like_count=Count('likes')).order_by('-like_count')[:3]
+        serializer = EditorPostSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    @action(detail=True, methods=['PUT'])
+    def update_post(self, request, pk=None):
+        post = self.get_object()
+        if request.user.is_staff:
+            serializer = EditorPostSerializer(post, data=request.data, context={'request': request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({'message': '지자체 관리자세요? 등록이 필요해요! 🦁'}, status=status.HTTP_403_FORBIDDEN)
+
+    @action(detail=True, methods=['DELETE'])
+    def delete_post(self, request, pk=None):
+        post = self.get_object()
+        if request.user.is_staff:
+            post.delete()
+            return Response({'message': '게시글이 삭제되었습니다!'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({'message': '작성 권한이 필요해요 🥹'}, status=status.HTTP_403_FORBIDDEN)
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # 사용자가 설정한 주소 정보
+        user_address = request.user.profile.address
+        user_province = user_address.province if user_address else None
+        user_city = user_address.city if user_address else None
+
+        # 작성자의 주소 정보
+        queryset = queryset.filter(
+            Q(author__profile__address__province=user_province) | Q(author__profile__address__city=user_city)
+        )
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+
  # 프론트 서버로 tts_title_mp3파일 전송하기 위한 APIView       
 class TTSAudioTitleAPIView(APIView):
     def get(self, request, pk=None):

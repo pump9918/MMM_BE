@@ -35,6 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
         tts_title_message = validated_data.pop('tts_title_message', None)
         tts_message = validated_data.pop('tts_message', None)
         
+        
         author = self.context['request'].user
         
         if tts_title_message: 
@@ -74,3 +75,19 @@ class PostSerializer(serializers.ModelSerializer):
     
     def get_likes(self, obj):
         return obj.likes.count()
+    
+    
+    
+class EditorPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('title', 'content', 'author', 'likes', 'image', 'published_date')
+        read_only_fields = ('likes', 'published_date')
+
+    def create(self, validated_data):
+        author = self.context['request'].user
+        if author.is_staff:  
+            post = Post.objects.create(author=author, **validated_data)
+            return post
+        else:
+            raise serializers.ValidationError("지자체 관리자만 글을 쓸 수 있는 게시판이예요🦁")
