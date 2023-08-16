@@ -6,9 +6,7 @@ from user.managers import UserManager
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-class Adress(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='address')
-    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, related_name='address')
+class Address(models.Model):
     province = models.CharField(
         choices=(
         ('Seoul', '서울특별시'),
@@ -53,7 +51,7 @@ class Adress(models.Model):
         ('Paju', '파주시'),
             
             
-        ), max_length=50, blank=False, null=False)
+        ), max_length=50, blank=True, null=True)
     
 class User(AbstractUser, PermissionsMixin):
 
@@ -66,7 +64,8 @@ class User(AbstractUser, PermissionsMixin):
         ), max_length=1, blank=True)
     birth = models.DateField(blank=True, null=True)
     phone_number = models.CharField(max_length=128, blank=True)
-    address = models.OneToOneField(Adress, on_delete=models.CASCADE, related_name='user_address', blank=True, null=True)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, related_name='user_address', blank=True, null=True)
+
 
     is_active = models.BooleanField(default=True)
 
@@ -85,7 +84,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     nickname = models.CharField(max_length=10, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
-    address = models.OneToOneField(Adress, on_delete=models.CASCADE, related_name='user_address', blank=True, null=True)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, related_name='profile_address', blank=True, null=True)
 
 
     def __str__(self):
@@ -100,7 +99,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 class EditorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='editor_profile')
     name = models.CharField(max_length=10, blank=False, null=False)
-    address = models.OneToOneField(Adress, on_delete=models.CASCADE, related_name='user_address', blank=True, null=True)
+    address = models.OneToOneField(Address, on_delete=models.CASCADE, related_name='editor_address', blank=True, null=True)
 
 
     def __str__(self):
