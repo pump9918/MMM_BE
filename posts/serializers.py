@@ -89,16 +89,20 @@ class EditorPostSerializer(serializers.ModelSerializer):
         read_only_fields = ('likes', 'published_date', 'id')
 
     def create(self, validated_data):
-        author = self.context['request'].user
+        user = self.context['request'].user
 
-        try:
-            editor_profile = EditorProfile.objects.get(user=author)
-        except EditorProfile.DoesNotExist:
-            raise serializers.ValidationError("지자체 관리자만 글을 쓸 수 있는 게시판이예요🦁")
+        if user.is_authenticated:
+            try:
+                editor_profile = EditorProfile.objects.get(user=user)
+            except EditorProfile.DoesNotExist:
+                raise serializers.ValidationError("글쓰기 권한이 없습니다")
 
-        post = Post.objects.create(author=author, **validated_data)
-        return post
-    
+            post = Post.objects.create(author=user, **validated_data)
+            return post
+        else:
+            raise serializers.ValidationError("로그인하세요!")
+        
+        
     def get_due_status(self, obj):
         current_datetime = timezone.now()
 
@@ -108,3 +112,5 @@ class EditorPostSerializer(serializers.ModelSerializer):
             return "모집중"
         else:
             return None
+        
+
