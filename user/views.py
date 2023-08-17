@@ -10,14 +10,22 @@ from posts.serializers import PostSerializer
 class ProfileListView(generics.ListAPIView):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-
+    
 
 class ProfileView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+    # queryset = Profile.objects.all()
+    # serializer_class = ProfileSerializer
 
-    def get_queryset(self):
-        return Profile.objects.filter(user=self.request.user)
+    # def get_queryset(self):
+    #     return Profile.objects.filter(user=self.request.user)
+    
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()  # Use this instead of get_queryset()
+
+    def get_object(self):
+        user = self.request.user
+        profile, created = Profile.objects.get_or_create(user=user)
+        return profile
     
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
