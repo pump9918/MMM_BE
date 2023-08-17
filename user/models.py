@@ -54,7 +54,7 @@ class Address(models.Model):
         ), max_length=50, blank=True, null=True)
     
 class User(AbstractUser, PermissionsMixin):
-
+    user_ID = models.AutoField(primary_key=True)
     username = models.CharField(max_length=128)
     email = models.EmailField(db_index=True, unique=True)
     gender = models.CharField(
@@ -81,6 +81,7 @@ class User(AbstractUser, PermissionsMixin):
     
 
 class Profile(models.Model):
+
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     nickname = models.CharField(max_length=10, blank=True, null=True)
     birthday = models.DateField(blank=True, null=True)
