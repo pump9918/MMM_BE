@@ -1,8 +1,0 @@
-drf-yasg
-django-filter
-django-allauth
-dj-rest-allauth
-djangorestframework-simplejwt
-django-cors-headers
-gTTS
-Pillow

@@ -32,7 +32,7 @@ class PostSerializer(serializers.ModelSerializer):
         # fields = ('published_date', 'likes', 'author_name', 'title', 'content', 'nickname', 'tts_title_message', 'tts_message', 'tts_title_audio', 'tts_audio', 'tts_title_audio_message', 'tts_audio_message')
         # read_only_fields = ('id', 'published_date', 'likes', 'author', 'nickname')
         model = Post
-        fields = ('published_date', 'likes', 'author_name', 'nickname', 'tts_title_message', 'tts_message', 'tts_title_audio', 'tts_audio', 'tts_title_audio_message', 'tts_audio_message')
+        fields = ('id', 'published_date', 'likes', 'author_name', 'nickname', 'tts_title_message', 'tts_message', 'tts_title_audio', 'tts_audio', 'tts_title_audio_message', 'tts_audio_message')
         read_only_fields = ('id', 'published_date', 'likes', 'author', 'nickname')
 
     def create(self, validated_data):

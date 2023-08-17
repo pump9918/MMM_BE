@@ -33,6 +33,7 @@ for key, value in secrets.items():
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key')
+
 DJANGO_SECRET_KEY = 'django-insecure-89r0gm-d&=5t)55@5zo5=!gd-mca4$n+0jxi&tmwfy5zun3qig'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -76,10 +77,12 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # 미들웨어 추가
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    
+    'corsheaders.middleware.CorsMiddleware',  # 미들웨어 추가
     'django.middleware.common.CommonMiddleware',
+    
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -164,6 +167,7 @@ SITE_ID = 1 #admin 출입 위해
 
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 추가
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
@@ -212,23 +216,21 @@ ACCOUNT_EMAIL_REQUIRED = True            # email 필드 사용 o
 ACCOUNT_USERNAME_REQUIRED = False        # username 필드 사용 x
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",  # 허용할 도메인 추가
-    "http://localhost:5173", # 프론트 도메인
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000"
-]
-CORS_ORIGIN_WHITELIST = (
-    "http://127.0.0.1:8000",  # 허용할 도메인 추가
-    "http://localhost:5173", # 프론트 도메인
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000"
-)
 
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOWED_ORIGINS = [
+# 여기에 프론트엔드 도메인 또는 IP 주소를 추가해야 합니다.
+# 예를 들어, "http://frontend.example.com"와 같이 입력합니다.
+"http://127.0.0.1:3000",
+"http://localhost:3000",
+"http://127.0.0.1:5173",
+"http://localhost:5173",
+"http://15.164.130.47",
+"http://15.164.130.47:3000",
+"http://15.164.130.47:5173",
+]
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend', #accounts 로그인 문제
