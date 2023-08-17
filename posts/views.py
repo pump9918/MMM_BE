@@ -170,7 +170,7 @@ class EditorPostViewSet(viewsets.ModelViewSet):
 
 
 
- # 프론트 서버로 tts_title_mp3파일 전송하기 위한 APIView       
+# 프론트 서버로 tts_title_mp3파일 전송하기 위한 APIView       
 class TTSAudioTitleAPIView(APIView):
     def get(self, request, pk=None):
         post = Post.objects.get(pk=pk)
@@ -182,7 +182,7 @@ class TTSAudioTitleAPIView(APIView):
                 return response
         return Response({'message': '음성 파일이 없습니다.'}, status=status.HTTP_404_NOT_FOUND)
         
- # 프론트 서버로 tts_mp3파일 전송하기 위한 APIView      
+# 프론트 서버로 tts_mp3파일 전송하기 위한 APIView      
 class TTSAudioAPIView(APIView):
     def get(self, request, pk=None):
         post = Post.objects.get(pk=pk)

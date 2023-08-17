@@ -34,6 +34,11 @@ class Post(models.Model):
     tts_title_audio = models.ForeignKey(TTSAudioTitle, on_delete=models.SET_NULL, null=True, blank=True)
     tts_audio = models.ForeignKey(TTSAudio, on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='post/', blank=True, null=True, default = '')
+    due_date = models.DateTimeField(blank=True, null=True) #마감일
+    event_date = models.DateTimeField(blank=True, null=True) #행사 날짜
+    
+    
+    
     
     def __str__(self):
         return self.title

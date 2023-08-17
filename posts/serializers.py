@@ -5,6 +5,8 @@ from rest_framework import serializers
 
 from user.serializers import ProfileSerializer
 from .models import Post, TTSAudio, TTSAudioTitle
+from user.models import EditorProfile, Profile
+from django.utils import timezone
 
 
 class TTSAudioTitleSerializer(serializers.ModelSerializer):
@@ -79,15 +81,30 @@ class PostSerializer(serializers.ModelSerializer):
     
     
 class EditorPostSerializer(serializers.ModelSerializer):
+    due_status = serializers.SerializerMethodField()
+    
     class Meta:
         model = Post
-        fields = ('title', 'content', 'author', 'likes', 'image', 'published_date')
-        read_only_fields = ('likes', 'published_date')
+        fields = ('title', 'content', 'author', 'likes', 'image', 'published_date', 'due_date', 'event_date','due_status')
+        read_only_fields = ('likes', 'published_date', 'id')
 
     def create(self, validated_data):
         author = self.context['request'].user
-        if author.is_staff:  
-            post = Post.objects.create(author=author, **validated_data)
-            return post
-        else:
+
+        try:
+            editor_profile = EditorProfile.objects.get(user=author)
+        except EditorProfile.DoesNotExist:
             raise serializers.ValidationError("지자체 관리자만 글을 쓸 수 있는 게시판이예요🦁")
+
+        post = Post.objects.create(author=author, **validated_data)
+        return post
+    
+    def get_due_status(self, obj):
+        current_datetime = timezone.now()
+
+        if obj.due_date and obj.due_date <= current_datetime:
+            return "모집완료"
+        elif obj.due_date:
+            return "모집중"
+        else:
+            return None
