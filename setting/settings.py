@@ -165,6 +165,7 @@ SITE_ID = 1 #admin 출입 위해
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Default primary key field type
@@ -212,22 +213,20 @@ ACCOUNT_EMAIL_REQUIRED = True            # email 필드 사용 o
 ACCOUNT_USERNAME_REQUIRED = False        # username 필드 사용 x
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:8000",  # 허용할 도메인 추가
-    "http://localhost:5173", # 프론트 도메인
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000"
-]
-CORS_ORIGIN_WHITELIST = (
-    "http://127.0.0.1:8000",  # 허용할 도메인 추가
-    "http://localhost:5173", # 프론트 도메인
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000"
-)
-
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOWED_ORIGINS = [
+# 여기에 프론트엔드 도메인 또는 IP 주소를 추가해야 합니다.
+# 예를 들어, "http://frontend.example.com"와 같이 입력합니다.
+"http://127.0.0.1:3000",
+"http://localhost:3000",
+"http://127.0.0.1:5173",
+"http://localhost:5173",
+"http://15.164.130.47",
+"http://15.164.130.47:3000",
+"http://15.164.130.47:5173",
+]
 
 
 AUTHENTICATION_BACKENDS = [
