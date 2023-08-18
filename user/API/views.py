@@ -107,7 +107,7 @@ class NaverCallbackAPIView(APIView):
             except User.DoesNotExist:
                 data = {'access_token': access_token, 'code': code}
                 accept = requests.post(
-                    f"{main_domain}/user/naver/login/success", data=data
+                    f"{main_domain}/api/user/naver/login/success", data=data
                 )
                 # token 발급
                 return Response(accept.json(), status=status.HTTP_200_OK)
