@@ -37,10 +37,12 @@ class Post(models.Model):
     due_date = models.DateTimeField(blank=True, null=True) #마감일
     event_date = models.DateTimeField(blank=True, null=True) #행사 날짜
     
+
     editor_author = models.ForeignKey(EditorProfile, on_delete=models.CASCADE, related_name='editorprofile_name')
     
+    editor_name = models.CharField(max_length=20, blank=False, null=False, default='')
     phonenum = models.CharField(max_length=20, blank=True, null=True) #전화번호
-    
+    editor_address = models.CharField(max_length=50, blank=False, null=False, default='')
     def __str__(self):
         return self.title
     

@@ -86,26 +86,25 @@ class PostSerializer(serializers.ModelSerializer):
     
 class EditorPostSerializer(serializers.ModelSerializer):
     due_status = serializers.SerializerMethodField()
+    # editorauthor = serializers.SerializerMethodField()
+    user_ID = serializers.CharField(source='editor_author.user.id', read_only=True)
     
     class Meta:
         model = Post
-        fields = ('title', 'content', 'author', 'likes', 'image', 'published_date', 'due_date', 'event_date','due_status')
-        read_only_fields = ('likes', 'published_date', 'id')
+        fields = ('title', 'content', 'editor_author', 'likes', 'image', 'published_date', 'due_date', 'event_date','due_status','user_ID','editor_address')
+        read_only_fields = ('likes', 'published_date', 'editor_author', 'due_status')
 
     def create(self, validated_data):
         user = self.context['request'].user
 
-        if user.is_authenticated:
-            try:
-                editor_profile = EditorProfile.objects.get(user=user)
-            except EditorProfile.DoesNotExist:
-                raise serializers.ValidationError("글쓰기 권한이 없으세용(⊙_⊙)")
+        try:
+            editor_author = EditorProfile.objects.get(user=user)
+        except EditorProfile.DoesNotExist:
+            raise serializers.ValidationError("글쓰기 권한이 없으세용(⊙_⊙)")
 
-            post = Post.objects.create(author=user, **validated_data)
-            return post
-        else:
-            raise serializers.ValidationError("로그인 하세용!!!!!!;;(╬▔皿▔)╯")
-        
+        post = Post.objects.create(editor_author=editor_author, **validated_data)
+        return post
+
         
     def get_due_status(self, obj):
         current_datetime = timezone.now()
