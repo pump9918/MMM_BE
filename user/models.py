@@ -89,7 +89,7 @@ class Profile(models.Model):
 
 
     def __str__(self):
-        return self.user.name
+        return self.user.email
 
 
 @receiver(post_save, sender=User)
@@ -101,10 +101,10 @@ class EditorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='editor_profile')
     name = models.CharField(max_length=10, blank=False, null=False)
     address = models.OneToOneField(Address, on_delete=models.CASCADE, related_name='editor_address', blank=True, null=True)
-
+    email = models.EmailField(db_index=True, unique=True, null=False, blank=False)
 
     def __str__(self):
-        return self.user.name
+        return self.user.email
 
 @receiver(post_save, sender=User)
 def create_editor_profile(sender, instance, created, **kwargs):

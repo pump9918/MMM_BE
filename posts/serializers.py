@@ -89,22 +89,22 @@ class EditorPostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('title', 'content', 'editor_author', 'likes', 'image', 'published_date', 'due_date', 'event_date','due_status', 'phonenum')
-        read_only_fields = ('likes', 'published_date', 'id', 'due_status')
+        fields = ('title', 'content', 'author', 'likes', 'image', 'published_date', 'due_date', 'event_date','due_status')
+        read_only_fields = ('likes', 'published_date', 'id')
 
     def create(self, validated_data):
         user = self.context['request'].user
 
-        if EditorProfile.objects.filter(user=user).exists():
+        if user.is_authenticated:
             try:
                 editor_profile = EditorProfile.objects.get(user=user)
             except EditorProfile.DoesNotExist:
-                raise serializers.ValidationError("글쓰기 권한이 없습니다")
+                raise serializers.ValidationError("글쓰기 권한이 없으세용(⊙_⊙)")
 
             post = Post.objects.create(author=user, **validated_data)
             return post
         else:
-            raise serializers.ValidationError("로그인하세요!")
+            raise serializers.ValidationError("로그인 하세용!!!!!!;;(╬▔皿▔)╯")
         
         
     def get_due_status(self, obj):
@@ -117,4 +117,3 @@ class EditorPostSerializer(serializers.ModelSerializer):
         else:
             return None
         
-
