@@ -97,7 +97,7 @@ class NaverCallbackAPIView(APIView):
                 # accept 에는 token 값이 json 형태로 들어온다({"key"}:"token value")
                 # 여기서 오는 key 값은 authtoken_token에 저장된다.
                 accept = requests.post(
-                    f"{main_domain}/user/naver/login/success", data=data
+                    f"{main_domain}/api/user/naver/login/success", data=data
                 )
                 # 만약 token 요청이 제대로 이루어지지 않으면 오류처리
                 if accept.status_code != 200:
