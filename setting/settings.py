@@ -219,6 +219,17 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',  # 이 부분을 추가해줍니다
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 CORS_ALLOWED_ORIGINS = [
 # 여기에 프론트엔드 도메인 또는 IP 주소를 추가해야 합니다.
