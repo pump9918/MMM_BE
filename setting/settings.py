@@ -222,13 +222,16 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
-    'authorization',  # 이 부분을 추가해줍니다
+    'authorization',
     'content-type',
     'dnt',
     'origin',
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
+    'access-control-allow-headers',  # 이 헤더도 추가해보세요
+    'your-custom-header',  # 사용자 정의 헤더를 추가해보세요
+    # 필요한 다른 헤더들을 여기에 추가해주세요
 ]
 
 CORS_ALLOWED_ORIGINS = [
