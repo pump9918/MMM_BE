@@ -239,6 +239,7 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
     'access-control-allow-headers',  # 이 헤더도 추가해보세요
+    'access-control-allow-origin-headers',
     'your-custom-header',  # 사용자 정의 헤더를 추가해보세요
     # 필요한 다른 헤더들을 여기에 추가해주세요
 ]
