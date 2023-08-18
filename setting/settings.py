@@ -219,6 +219,15 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHOD = {
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'PUT',
+    'POST',
+}
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
@@ -233,6 +242,8 @@ CORS_ALLOW_HEADERS = [
     'your-custom-header',  # 사용자 정의 헤더를 추가해보세요
     # 필요한 다른 헤더들을 여기에 추가해주세요
 ]
+
+SOCIALACCOUNT_LOGIN_ON_GET=True
 
 CORS_ALLOWED_ORIGINS = [
 # 여기에 프론트엔드 도메인 또는 IP 주소를 추가해야 합니다.
