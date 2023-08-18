@@ -31,10 +31,11 @@ for key, value in secrets.items():
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key')
+# # SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key')
+SECRET_KEY = secrets['SECRET_KEY']
 
-DJANGO_SECRET_KEY = 'django-insecure-89r0gm-d&=5t)55@5zo5=!gd-mca4$n+0jxi&tmwfy5zun3qig'
+# DJANGO_SECRET_KEY = 'django-insecure-89r0gm-d&=5t)55@5zo5=!gd-mca4$n+0jxi&tmwfy5zun3qig'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -169,7 +170,6 @@ STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') # 추가
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 
 # Default primary key field type
