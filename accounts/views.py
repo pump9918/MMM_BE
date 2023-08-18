@@ -39,7 +39,10 @@ from rest_framework.permissions import AllowAny
 class RegisterView(CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
-    
+
+    def perform_create(self, serializer):
+        user = serializer.save()
+
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
     permission_classes = [AllowAny]
