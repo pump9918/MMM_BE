@@ -89,13 +89,13 @@ class EditorPostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('title', 'content', 'author', 'likes', 'image', 'published_date', 'due_date', 'event_date','due_status')
-        read_only_fields = ('likes', 'published_date', 'id')
+        fields = ('title', 'content', 'editor_author', 'likes', 'image', 'published_date', 'due_date', 'event_date','due_status', 'phonenum')
+        read_only_fields = ('likes', 'published_date', 'id', 'due_status')
 
     def create(self, validated_data):
         user = self.context['request'].user
 
-        if user.is_authenticated:
+        if EditorProfile.objects.filter(user=user).exists():
             try:
                 editor_profile = EditorProfile.objects.get(user=user)
             except EditorProfile.DoesNotExist:

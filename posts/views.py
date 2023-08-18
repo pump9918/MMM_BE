@@ -4,7 +4,7 @@ from django.db.models import Count, Q
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import viewsets
 # from .permissions import CustomReadOnly
-from user.models import User
+from user.models import User, EditorProfile
 from .models import Post, TTSAudioTitle, TTSAudio, Like
 from .serializers import PostSerializer, EditorPostSerializer
 from .paginations import PostPagination
@@ -144,7 +144,8 @@ class EditorPostViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['PUT'])
     def update_post(self, request, pk=None):
         post = self.get_object()
-        if request.user.is_staff:
+        user = request.user
+        if EditorProfile.objects.filter(user=user).exists():
             serializer = EditorPostSerializer(post, data=request.data, context={'request': request})
             if serializer.is_valid():
                 serializer.save()
@@ -155,12 +156,13 @@ class EditorPostViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['DELETE'])
     def delete_post(self, request, pk=None):
+        user = request.user
         post = self.get_object()
-        if request.user.is_staff:
+        if EditorProfile.objects.filter(user=user).exists():
             post.delete()
             return Response({'message': '게시글이 삭제되었습니다!'}, status=status.HTTP_204_NO_CONTENT)
         else:
-            return Response({'message': '작성 권한이 필요해요 🥹'}, status=status.HTTP_403_FORBIDDEN)
+            return Response({'message':  '권한이 필요해요 🥹'}, status=status.HTTP_403_FORBIDDEN)
 
 
     def list(self, request, *args, **kwargs):

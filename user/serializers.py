@@ -13,7 +13,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class EditorProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = EditorProfile
-        fields = ['user', 'name', 'address']
+        fields = ['name', 'address']
 
     def create(self, validated_data):
         user = self.context['request'].user

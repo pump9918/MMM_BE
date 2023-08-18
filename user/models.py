@@ -89,7 +89,7 @@ class Profile(models.Model):
 
 
     def __str__(self):
-        return self.user.email
+        return self.user.name
 
 
 @receiver(post_save, sender=User)
@@ -104,7 +104,7 @@ class EditorProfile(models.Model):
 
 
     def __str__(self):
-        return self.user.email
+        return self.user.name
 
 @receiver(post_save, sender=User)
 def create_editor_profile(sender, instance, created, **kwargs):
