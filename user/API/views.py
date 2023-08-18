@@ -34,7 +34,7 @@ class NaverLoginAPIView(APIView):
         response_type = "code"
         # Naver에서 설정했던 callback url을 입력해주어야 한다.
         # 아래의 전체 값은 http://127.0.0.1:8000/user/naver/callback 이 된다.
-        uri = main_domain + "/user/naver/callback"
+        uri = main_domain + "api/user/naver/callback"
         state = settings.STATE
         # Naver Document 에서 확인했던 요청 url
         url = "https://nid.naver.com/oauth2.0/authorize"
